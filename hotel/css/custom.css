@@ -1,4 +1,0 @@
-td:contains('UNKNOWN') {
-    color: red;
-    font-weight: bold;
-}
