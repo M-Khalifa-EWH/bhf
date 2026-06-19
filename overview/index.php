@@ -35,40 +35,81 @@ include(__DIR__ . '/../templates/header.php');
     @keyframes spin {
         to { transform: rotate(360deg); }
     }
-  #top-status-bar{
+#top-status-bar {
     position: sticky;
     top: 0;
     z-index: 999;
-    background: #fff;
-    padding: 10px;
+gap: 2ch;
+    background: #f8fafc;
+    padding: 12px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+
+    max-width: 1275px;              
+    margin: 0 auto;                
+}
+#last-sync {
+    background: linear-gradient(115deg, #0ea5e9, #0284c7);
+    color: white;
+
+    border-radius: 10px;
+    padding: 6px 10px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+#zero-activity-wrapper {
+    display: flex;
+    justify-content: flex-end; /* ✅ يمين */
+}
+#zero-activity-wrapper > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
 }
 </style>
 
-<main class="flex-fill">
 
-    <div class="container mt-4">
+    
         <div id="top-status-bar">
+
+<div id="user-alert-box">
+    <?php include 'zero_activity_alert.php'; ?>
+</div>
+
     <div id="last-sync" class="alert alert-info text-center fs-4 fw-bold mb-0">
         <span class="spinner"></span> Loading last sync...
     </div>
 
    
-<?php //include 'zero_activity_alert.php'; ?>
+
+
+<div id="user-alert-box">
+    <?php include 'rate_alert.php'; ?>
 </div>
 
-        <h5 align="center">All</h5>
+</div>
+
+<main class="flex-fill">
+<div class="container mt-4">
+        <!--<h5 align="center">All</h5>-->
         <div id="overview-ewh-loader" class="text-center my-2"><span class="spinner"></span> Loading...</div>
         <div id="overview-ewh"></div>
 
-        <h5 align="center">EWH-FV</h5>
+        <h6 align="center">EWH-FV</h6>
         <div id="overview-ev-loader" class="text-center my-2"><span class="spinner"></span> Loading...</div>
         <div id="overview-ev"></div>
 
-        <h5 align="center">HLM-FV</h5>
+        <h6 align="center">HLM-FV</h6>
         <div id="overview-hlm-loader" class="text-center my-2"><span class="spinner"></span> Loading...</div>
         <div id="overview-hlm"></div>
 
-        <h5 align="center">EWH-EV</h5>
+        <h6 align="center">EWH-EV</h6>
         <div id="overview-fv-loader" class="text-center my-2"><span class="spinner"></span> Loading...</div>
         <div id="overview-fv"></div>        
         
@@ -83,8 +124,14 @@ include(__DIR__ . '/../templates/header.php');
 <script>
 window.addEventListener('DOMContentLoaded', () => {
     loadAllData();
-    setInterval(() => loadAllData(), 60000); // Refresh every 60 seconds
+    refreshUserAlert(); // ✅ أول تحميل
+
+    setInterval(() => {
+        loadAllData();
+        refreshUserAlert(); // ✅ يحدث التحذير كل دقيقة
+    }, 60000);
 });
+
 
 function loadAllData() {
     loadAndRender('getOverviewData_ewh.php', 'overview-ewh', 'tbl-ewh', 'last-sync');
@@ -229,6 +276,20 @@ function applyStyling(selector) {
         }
     });
 }
+function refreshUserAlert() {
+    fetch('zero_activity_alert.php')
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('zero-alert').innerHTML = html;
+        });
+
+    fetch('rate_alert.php')
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('rate-alert').innerHTML = html;
+        });
+}
+
 
 </script>
 
