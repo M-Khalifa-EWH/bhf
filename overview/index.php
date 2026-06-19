@@ -78,18 +78,15 @@ gap: 2ch;
     
         <div id="top-status-bar">
 
-<div id="user-alert-box">
+<div id="zero-alert" class="dashboard-alert-box">
     <?php include 'zero_activity_alert.php'; ?>
 </div>
 
-    <div id="last-sync" class="alert alert-info text-center fs-4 fw-bold mb-0">
-        <span class="spinner"></span> Loading last sync...
-    </div>
+<div id="last-sync" class="alert alert-info text-center fs-4 fw-bold mb-0">
+    <span class="spinner"></span> Loading last sync...
+</div>
 
-   
-
-
-<div id="user-alert-box">
+<div id="rate-alert" class="dashboard-alert-box">
     <?php include 'rate_alert.php'; ?>
 </div>
 
